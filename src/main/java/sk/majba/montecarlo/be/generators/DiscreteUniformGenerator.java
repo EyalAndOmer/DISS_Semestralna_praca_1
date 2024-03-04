@@ -10,13 +10,13 @@ public class DiscreteUniformGenerator extends Generator {
     private final int upperBound;
     private final Random seedGenerator;
 
-    public DiscreteUniformGenerator(int lowerBound, int upperBound) {
+    public DiscreteUniformGenerator(int lowerBound, int upperBound, Random seedGenerator) {
         if (lowerBound >= upperBound) {
             throw new IllegalArgumentException("Lower bound must be less than upper bound");
         }
         this.lowerBound = lowerBound;
         this.upperBound = upperBound;
-        this.seedGenerator = new Random();
+        this.seedGenerator = seedGenerator;
     }
 
     public double generate() {
