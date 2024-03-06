@@ -4,17 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static sk.majba.montecarlo.HelloApplication.DELTA;
+import static sk.majba.montecarlo.HelloApplication.*;
 
 public class ContinuousEmpiricGenerator extends Generator {
     private final List<Double> generationIntervals;
     private final List<Generator> empiricGenerators;
     private final Random propabilityRandom;
+    private final Random seedGenerator;
 
-    public ContinuousEmpiricGenerator(List<Generator> empiricGenerators) {
+    public ContinuousEmpiricGenerator(List<Generator> empiricGenerators, Random seedGenerator) {
         this.generationIntervals = new ArrayList<>();
         this.propabilityRandom = new Random();
         this.empiricGenerators = empiricGenerators;
+        this.seedGenerator = seedGenerator;
 
         this.checkProbabilitySum();
         this.createProbabilityMap(empiricGenerators);
@@ -49,22 +51,27 @@ public class ContinuousEmpiricGenerator extends Generator {
 
     private Generator findProbabilityRandom(double probability) {
         for (int i = 0; i < this.generationIntervals.size() - 1; i++) {
-            if (Math.abs(probability - this.generationIntervals.get(i)) < DELTA || Math.abs(probability - this.generationIntervals.get(i + 1)) < DELTA ||
+            if (Math.abs(probability - this.generationIntervals.get(i)) < DELTA ||
                     (probability >= this.generationIntervals.get(i) && probability < this.generationIntervals.get(i + 1))) {
                 return this.empiricGenerators.get(i);
             }
         }
 
+        if (probability == 0) {
+            throw new IllegalArgumentException("Probability is 0");
+        }
+
         if (Math.abs(probability - this.generationIntervals.getLast()) < DELTA ||
-                (probability >= this.generationIntervals.getLast() && probability < 1.00)) {
+                (probability >= this.generationIntervals.getLast() && probability <= 1.00)) {
             return this.empiricGenerators.getLast();
         }
 
-        throw new IllegalArgumentException("Probability not found");
+        throw new IllegalArgumentException(String.format("Probability not found %f", probability));
     }
 
     @Override
     public double generate() {
+        this.propabilityRandom.setSeed(this.seedGenerator.nextInt());
         double probability = this.propabilityRandom.nextDouble();
         Generator pickedGenerator = this.findProbabilityRandom(probability);
 

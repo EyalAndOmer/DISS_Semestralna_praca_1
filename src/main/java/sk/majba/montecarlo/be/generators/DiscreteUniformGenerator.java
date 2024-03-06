@@ -20,12 +20,8 @@ public class DiscreteUniformGenerator extends Generator {
     }
 
     public double generate() {
-        if (!DEBUG) {
-            super.setSeed(seedGenerator.nextLong());
-        } else {
-            super.setSeed(STATIC_SEED);
-        }
+        super.setSeed(this.seedGenerator.nextInt());
 
-        return lowerBound + super.nextInt(upperBound - lowerBound + 1);
+        return this.lowerBound + (double) super.nextInt(this.upperBound - this.lowerBound + 1);
     }
 }
