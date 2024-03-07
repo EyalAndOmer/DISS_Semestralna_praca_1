@@ -1,10 +1,12 @@
 package sk.majba.montecarlo.be.generators;
 
+import sk.majba.montecarlo.be.ContinuousEmpiricGeneratorConfiguration;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static sk.majba.montecarlo.HelloApplication.*;
+import static sk.majba.montecarlo.be.Constants.DELTA;
 
 public class ContinuousEmpiricGenerator extends Generator {
     private final List<Double> generationIntervals;
@@ -12,14 +14,25 @@ public class ContinuousEmpiricGenerator extends Generator {
     private final Random propabilityRandom;
     private final Random seedGenerator;
 
-    public ContinuousEmpiricGenerator(List<Generator> empiricGenerators, Random seedGenerator) {
+    public ContinuousEmpiricGenerator(List<ContinuousEmpiricGeneratorConfiguration> configurations, Random seedGenerator) {
         this.generationIntervals = new ArrayList<>();
         this.propabilityRandom = new Random();
-        this.empiricGenerators = empiricGenerators;
+        this.empiricGenerators = new ArrayList<>();
         this.seedGenerator = seedGenerator;
 
+        this.initGenerators(configurations);
         this.checkProbabilitySum();
         this.createProbabilityMap(empiricGenerators);
+    }
+
+    private void initGenerators(List<ContinuousEmpiricGeneratorConfiguration> configurations) {
+        for (ContinuousEmpiricGeneratorConfiguration configuration : configurations) {
+            this.empiricGenerators.add(new ContinuousUniformGenerator(
+                    configuration.getLowerBound(),
+                    configuration.getUpperBound(), this.seedGenerator,
+                    configuration.getGenerationProbability())
+            );
+        }
     }
 
     private void createProbabilityMap(List<Generator> probabilityMap) {

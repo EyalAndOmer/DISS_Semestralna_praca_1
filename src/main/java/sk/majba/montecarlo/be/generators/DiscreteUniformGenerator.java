@@ -2,9 +2,6 @@ package sk.majba.montecarlo.be.generators;
 
 import java.util.Random;
 
-import static sk.majba.montecarlo.HelloApplication.DEBUG;
-import static sk.majba.montecarlo.HelloApplication.STATIC_SEED;
-
 public class DiscreteUniformGenerator extends Generator {
     private final int lowerBound;
     private final int upperBound;

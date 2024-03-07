@@ -5,29 +5,21 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import sk.majba.montecarlo.be.HypotekaReplication;
-import sk.majba.montecarlo.be.generators.ContinuousEmpiricGenerator;
-import sk.majba.montecarlo.be.generators.ContinuousUniformGenerator;
-import sk.majba.montecarlo.be.generators.DiscreteUniformGenerator;
-import sk.majba.montecarlo.be.generators.Generator;
 import sk.majba.montecarlo.be.simulation_core.SimulationCore;
-import sk.majba.montecarlo.utils.FileUtils;
 
 import java.io.IOException;
-import java.util.*;
 
-public class HelloApplication {
-    public static final boolean DEBUG = true;
-    public static final int STATIC_SEED = 1;
-    public static final double DELTA = 1.0E-12;
-//    @Override
-//    public void start(Stage stage) throws IOException {
-////        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
-////        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
-////        stage.setTitle("Hello!");
-////        stage.setScene(scene);
-////        stage.show();
-//
-//    }
+
+public class Main extends Application {
+    @Override
+    public void start(Stage stage) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("main_window.fxml"));
+        Scene scene = new Scene(loader.load(), 640, 480);
+
+        stage.setScene(scene);
+        stage.show();
+
+    }
 
     public static void main(String[] args) {
 //        launch();
