@@ -1,5 +1,6 @@
 package sk.majba.montecarlo.be;
 
+import java.util.Map;
 import java.util.TreeMap;
 
 public class RangeMap<E> {
@@ -14,9 +15,9 @@ public class RangeMap<E> {
     }
 
     public E get(int number) {
-        for (Range range : map.keySet()) {
-            if (range.contains(number)) {
-                return map.get(range);
+        for (Map.Entry<Range, E> entry : map.entrySet()) {
+            if (entry.getKey().contains(number)) {
+                return entry.getValue();
             }
         }
         return null;
