@@ -79,7 +79,7 @@
         </VBox>
       <VBox alignment="BOTTOM_RIGHT" GridPane.columnIndex="4" GridPane.rowIndex="1">
          <children>
-                <Button fx:id="btnStartTraining" mnemonicParsing="false" onAction="#launchSimulation" prefHeight="43.0" prefWidth="236.0" text="Zastaviť simuláciu" />
+                <Button mnemonicParsing="false" onAction="#stopSimulation" prefHeight="43.0" prefWidth="236.0" text="Zastaviť simuláciu" />
          </children>
          <GridPane.margin>
             <Insets right="10.0" />
@@ -97,31 +97,16 @@
                   <RowConstraints minHeight="10.0" percentHeight="100.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                   <XYChart GridPane.columnIndex="0" fx:id="lineChartStrategy1" title="Stratégia 1">
-                       <axes>
-                           <DefaultNumericAxis dimIndex="0" side="BOTTOM" name="Počet replikácií"/>
-                           <DefaultNumericAxis dimIndex="1" side="LEFT" name="Počet replikácií"/>
-                       </axes>
-                   </XYChart>
-                   <XYChart GridPane.columnIndex="1" fx:id="lineChartStrategy2" title="Stratégia 2">
-                       <axes>
-                           <DefaultNumericAxis dimIndex="0" side="BOTTOM" name="Počet replikácií"/>
-                           <DefaultNumericAxis dimIndex="1" side="LEFT" name="Zaplatená suma"/>
-                       </axes>
-                   </XYChart>
-                   <XYChart GridPane.columnIndex="2" fx:id="lineChartStrategy3" title="Stratégia 3">
-                       <axes>
-                           <DefaultNumericAxis dimIndex="0" side="BOTTOM" name="Počet replikácií"/>
-                           <DefaultNumericAxis dimIndex="1" side="LEFT" name="Zaplatená suma"/>
-                       </axes>
-                   </XYChart>
+                   <XYChart GridPane.columnIndex="0" fx:id="lineChartStrategy1" title="Stratégia 1"/>
+                   <XYChart GridPane.columnIndex="1" fx:id="lineChartStrategy2" title="Stratégia 2"/>
+                   <XYChart GridPane.columnIndex="2" fx:id="lineChartStrategy3" title="Stratégia 3"/>
                </children>
             </GridPane>
          </children>
       </VBox>
       <VBox alignment="BOTTOM_RIGHT" GridPane.columnIndex="5" GridPane.rowIndex="1">
          <children>
-            <Button fx:id="btnStartTraining1" mnemonicParsing="false" onAction="#stopSimulation" prefHeight="43.0" prefWidth="236.0" text="Spustiť simuláciu">
+            <Button fx:id="btnStartTraining1" mnemonicParsing="false" onAction="#launchSimulation" prefHeight="43.0" prefWidth="236.0" text="Spustiť simuláciu">
                <padding>
                   <Insets left="10.0" />
                </padding>

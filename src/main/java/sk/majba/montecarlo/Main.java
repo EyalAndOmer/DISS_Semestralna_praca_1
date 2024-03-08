@@ -22,13 +22,13 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
-//        launch();
+        launch();
 //
-        HypotekaReplication replication = new HypotekaReplication();
-
-        SimulationCore simulationCore = new SimulationCore(replication);
-
-        simulationCore.simulate(100_000_000);
+//        HypotekaReplication replication = new HypotekaReplication();
+//
+//        SimulationCore simulationCore = new SimulationCore(replication);
+//
+//        simulationCore.simulate(10_000_000);
 //        Random seedGenerator = new Random();
 //        ArrayList<Generator> empiricGenerators =  new ArrayList<>();
 //        empiricGenerators.add(new ContinuousUniformGenerator(0.1, 0.3, seedGenerator, 0.1));

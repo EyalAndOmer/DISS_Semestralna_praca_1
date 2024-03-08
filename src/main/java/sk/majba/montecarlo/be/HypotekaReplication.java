@@ -1,5 +1,7 @@
 package sk.majba.montecarlo.be;
 
+import io.fair_acc.dataset.spi.DoubleDataSet;
+import javafx.application.Platform;
 import sk.majba.montecarlo.be.generators.*;
 import sk.majba.montecarlo.be.simulation_core.Replication;
 
@@ -25,7 +27,11 @@ public class HypotekaReplication implements Replication {
     double strategy3Sum;
     int numReplications;
 
+    List<DoubleDataSet> allDatasets;
 
+    public HypotekaReplication(List<DoubleDataSet> allDatasets) {
+        this.allDatasets = allDatasets;
+    }
 
     @Override
     public void beforeAllReplications() {
@@ -83,6 +89,16 @@ public class HypotekaReplication implements Replication {
         this.strategy3Sum += this.strategy3.getResult();
 
         this.numReplications++;
+
+        if (this.numReplications % 100 == 0 && this.numReplications > 1_000_000) {
+            final int finalI = this.numReplications;
+            // Output data to chart
+            Platform.runLater(() -> {
+                this.allDatasets.get(0).add(finalI, this.strategy1Sum / this.numReplications);
+                this.allDatasets.get(1).add(finalI, this.strategy2Sum / this.numReplications);
+                this.allDatasets.get(2).add(finalI, this.strategy3Sum / this.numReplications);
+            });
+        }
     }
 
     @Override

@@ -58,7 +58,7 @@ public class ContinuousEmpiricGenerator extends Generator {
         }
 
         if (totalSum != 1.0) {
-            throw new IllegalArgumentException("The total sum of probabilities in an empiric distribution must be equal to 1.");
+            throw new IllegalStateException("The total sum of probabilities in an empiric distribution must be equal to 1.");
         }
     }
 

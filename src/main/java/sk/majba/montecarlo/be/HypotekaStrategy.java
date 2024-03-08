@@ -15,7 +15,8 @@ public class HypotekaStrategy {
     private double vyskaHypotekarnehoUveru;
     private final RangeMap<Generator> generators;
 
-    public HypotekaStrategy(List<Integer> strategyFixationChangeYears, RangeMap<Generator> generators,int vyskaHypotekarnehoUveru, int pocetRokovSplacania) {
+    public HypotekaStrategy(List<Integer> strategyFixationChangeYears, RangeMap<Generator> generators,
+                            int vyskaHypotekarnehoUveru, int pocetRokovSplacania) {
         this.strategyFixationChangeYears = strategyFixationChangeYears;
         this.zostavajuciPocetRokovSplacania = pocetRokovSplacania;
         this.vyskaHypotekarnehoUveru = vyskaHypotekarnehoUveru;
