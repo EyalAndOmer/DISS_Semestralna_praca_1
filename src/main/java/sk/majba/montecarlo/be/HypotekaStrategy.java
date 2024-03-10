@@ -50,9 +50,9 @@ public class HypotekaStrategy {
                     Math.pow(1 + mesacnaUrokovaSadzba, 12 * this.zostavajuciPocetRokovSplacania)) /
                     (Math.pow(1 + mesacnaUrokovaSadzba, 12 * this.zostavajuciPocetRokovSplacania) - 1);
 
-            if (mesacnaSplatka < 0) {
-                throw new IllegalStateException("mesacnaSplatka cannot be negative");
-            }
+//            if (mesacnaSplatka < 0) {
+//                throw new IllegalStateException("mesacnaSplatka cannot be negative");
+//            }
 
             this.result += 12 * fixation * mesacnaSplatka;
             currentYear += fixation;
@@ -62,9 +62,9 @@ public class HypotekaStrategy {
                             Math.pow((1 + mesacnaUrokovaSadzba), 12 * (double) fixation)) /
                             (Math.pow((1 + mesacnaUrokovaSadzba), 12 * this.zostavajuciPocetRokovSplacania) - 1));
 
-            if (this.vyskaHypotekarnehoUveru < 0 || (this.vyskaHypotekarnehoUveru == 0 && currentYear != END_YEAR + 1)) {
-                throw new IllegalStateException("vyskaHypotekarnehoUveru cannot be negative");
-            }
+//            if (this.vyskaHypotekarnehoUveru < 0 || (this.vyskaHypotekarnehoUveru == 0 && currentYear != END_YEAR + 1)) {
+//                throw new IllegalStateException("vyskaHypotekarnehoUveru cannot be negative");
+//            }
 
             this.zostavajuciPocetRokovSplacania -= fixation;
         }

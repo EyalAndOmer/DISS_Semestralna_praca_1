@@ -19,6 +19,7 @@ public class ContinuousEmpiricGenerator extends Generator {
         this.propabilityRandom = new Random();
         this.empiricGenerators = new ArrayList<>();
         this.seedGenerator = seedGenerator;
+        this.propabilityRandom.setSeed(this.seedGenerator.nextInt());
 
         this.initGenerators(configurations);
         this.checkProbabilitySum();
@@ -44,6 +45,7 @@ public class ContinuousEmpiricGenerator extends Generator {
             lastKey = sum;
         }
 
+        // To keep the interval from 0 to 1, if the last key is not 1.0 explicitly, then add it as the last element in the interval
         if (lastKey != 1.0) {
             this.generationIntervals.removeLast();
             this.generationIntervals.add(1.0);
@@ -84,7 +86,6 @@ public class ContinuousEmpiricGenerator extends Generator {
 
     @Override
     public double generate() {
-        this.propabilityRandom.setSeed(this.seedGenerator.nextInt());
         double probability = this.propabilityRandom.nextDouble();
         Generator pickedGenerator = this.findProbabilityRandom(probability);
 

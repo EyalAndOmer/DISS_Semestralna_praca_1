@@ -14,11 +14,10 @@ public class DiscreteUniformGenerator extends Generator {
         this.lowerBound = lowerBound;
         this.upperBound = upperBound;
         this.seedGenerator = seedGenerator;
+        super.setSeed(this.seedGenerator.nextInt());
     }
 
     public double generate() {
-        super.setSeed(this.seedGenerator.nextInt());
-
         return this.lowerBound + (double) super.nextInt(this.upperBound - this.lowerBound + 1);
     }
 }

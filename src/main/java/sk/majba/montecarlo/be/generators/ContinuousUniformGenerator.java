@@ -17,6 +17,7 @@ public class ContinuousUniformGenerator extends Generator {
         this.upperBound = upperBound;
         this.seedGenerator = seedGenerator;
         this.generationProbability = 1;
+        super.setSeed(this.seedGenerator.nextInt());
     }
 
     public ContinuousUniformGenerator(double lowerBound, double upperBound, Random seedGenerator, double generationProbability) {
@@ -36,7 +37,6 @@ public class ContinuousUniformGenerator extends Generator {
 
     @Override
     public double generate() {
-        super.setSeed(this.seedGenerator.nextInt());
         return this.lowerBound + (this.upperBound - this.lowerBound) * super.nextDouble();
     }
 

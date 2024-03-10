@@ -1,8 +1,13 @@
 package sk.majba.montecarlo.be.simulation_core;
 
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public class SimulationCore {
     private final Replication replication;
+    private boolean isPaused = false;
+    private final AtomicBoolean pauseRequested = new AtomicBoolean(false);
+
 
     public SimulationCore(Replication replication) {
         this.replication = replication;
@@ -12,9 +17,10 @@ public class SimulationCore {
         this.replication.beforeAllReplications();
 
         for (int i = 0; i < numberOfReplications; i++) {
-            if (i % 10_000_000 == 0 && i > 0) {
-                System.out.printf("Replication %d done.%n", i);
+            while (pauseRequested.get()) {
+                this.isPaused = true;
             }
+            this.isPaused = false;
 
             this.replication.beforeReplication();
             this.replication.execute();
@@ -22,5 +28,15 @@ public class SimulationCore {
         }
 
         this.replication.afterAllReplications();
+    }
+
+    public void pauseSimulation() {
+        pauseRequested.set(true);
+    }
+
+    public void resumeSimulation() {
+        if (isPaused) {
+            pauseRequested.set(false);
+        }
     }
 }

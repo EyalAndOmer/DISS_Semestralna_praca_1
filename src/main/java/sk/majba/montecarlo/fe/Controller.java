@@ -8,6 +8,7 @@ import io.fair_acc.chartfx.renderer.spi.ErrorDataSetRenderer;
 import io.fair_acc.chartfx.ui.geometry.Side;
 import io.fair_acc.dataset.spi.DoubleDataSet;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import sk.majba.montecarlo.be.HypotekaReplication;
 import sk.majba.montecarlo.fe.converters.NumberAxisConverter;
@@ -25,6 +26,12 @@ public class Controller {
     public XYChart lineChartStrategy3;
     @FXML
     public TextField txtNumberOfReplications;
+    @FXML
+    public Button btnResumeSimulation;
+    @FXML
+    public Button btnStopAnimation;
+    @FXML
+    public Button btnStartSimulation;
     private SimulationCore simulationCore;
 
     public void initialize() {
@@ -83,22 +90,35 @@ public class Controller {
         lineChartStrategy2.getRenderers().add(lineChart2Renderer);
         lineChartStrategy3.getRenderers().add(lineChart3Renderer);
 
-
         List<DoubleDataSet> allDatasets = new ArrayList<>(List.of(datasetStrategy1, datasetStrategy2, datasetStrategy3));
         HypotekaReplication hypotekaReplication = new HypotekaReplication(allDatasets);
         this.simulationCore = new SimulationCore(hypotekaReplication);
+
+        this.btnResumeSimulation.setDisable(true);
+        this.btnStopAnimation.setDisable(true);
     }
 
     public void launchSimulation() {
+        this.btnStopAnimation.setDisable(false);
+        this.btnStartSimulation.setDisable(true);
         new Thread(() -> {
             try {
                 this.simulationCore.simulate(Integer.parseInt(this.txtNumberOfReplications.getText()));
             } finally {
-                System.out.println("done");
+                this.btnStartSimulation.setDisable(false);
             }
         }).start();
     }
 
     public void stopSimulation() {
+        this.simulationCore.pauseSimulation();
+        this.btnResumeSimulation.setDisable(false);
+        this.btnStopAnimation.setDisable(true);
+    }
+
+    public void resumeSimulation() {
+        this.btnResumeSimulation.setDisable(true);
+        this.btnStopAnimation.setDisable(false);
+        this.simulationCore.resumeSimulation();
     }
 }
