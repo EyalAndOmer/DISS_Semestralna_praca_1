@@ -110,6 +110,7 @@ public class Controller {
                 this.simulationCore.simulate(Integer.parseInt(this.txtNumberOfReplications.getText()));
             } finally {
                 this.btnStartSimulation.setDisable(false);
+                this.btnStopAnimation.setDisable(true);
                 Platform.runLater(() -> this.showAlert(Alert.AlertType.INFORMATION, "Ukončenie simulácie", "Simulácia sa ukončila úspešne."));
             }
         });
