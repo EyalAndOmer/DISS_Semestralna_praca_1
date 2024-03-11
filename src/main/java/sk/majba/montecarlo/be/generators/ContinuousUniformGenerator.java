@@ -8,6 +8,12 @@ public class ContinuousUniformGenerator extends Generator {
     private final Random seedGenerator;
     private final double generationProbability;
 
+    /**
+     * Creates a continuous uniform generator instance with an initialized seed and bounds
+     * @param lowerBound the lower bound of the generation interval (inclusive)
+     * @param upperBound the upper bound of the generation interval (exclusive)
+     * @param seedGenerator the generator used to initialize the see od the generator
+     */
     public ContinuousUniformGenerator(double lowerBound, double upperBound, Random seedGenerator) {
         if (lowerBound >= upperBound) {
             throw new IllegalArgumentException("Lower bound must be less than upper bound");

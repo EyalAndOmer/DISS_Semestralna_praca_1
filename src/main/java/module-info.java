@@ -9,6 +9,6 @@ module sk.majba {
 
     opens sk.majba.montecarlo to javafx.fxml;
     opens sk.majba.montecarlo.fe to javafx.fxml;
-    exports sk.majba.montecarlo to javafx.graphics;
-    exports sk.majba.montecarlo.fe to javafx.fxml;
+    exports sk.majba.montecarlo.fe to javafx.fxml, javafx.graphics;
+    exports sk.majba.montecarlo to javafx.fxml, javafx.graphics;
 }

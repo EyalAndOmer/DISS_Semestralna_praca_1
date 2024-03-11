@@ -6,6 +6,9 @@ import java.util.List;
 
 import static sk.majba.montecarlo.be.Constants.*;
 
+/**
+ * Class that encapsulates the logic behind one strategy used in the Monte Carlo simulation
+ */
 public class HypotekaStrategy {
     private final List<Integer> strategyFixationChangeYears;
     private double result;

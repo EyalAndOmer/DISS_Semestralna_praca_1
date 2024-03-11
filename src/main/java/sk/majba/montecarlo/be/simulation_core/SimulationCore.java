@@ -8,7 +8,6 @@ public class SimulationCore {
     private boolean isPaused = false;
     private final AtomicBoolean pauseRequested = new AtomicBoolean(false);
 
-
     public SimulationCore(Replication replication) {
         this.replication = replication;
     }
@@ -16,6 +15,7 @@ public class SimulationCore {
     public void simulate(int numberOfReplications) {
         this.replication.beforeAllReplications();
 
+        // Pause the simulation on user action
         for (int i = 0; i < numberOfReplications; i++) {
             while (pauseRequested.get()) {
                 this.isPaused = true;

@@ -1,25 +1,11 @@
 package sk.majba.montecarlo.be;
 
-public class ContinuousEmpiricGeneratorConfiguration {
-    final double lowerBound;
-    final double upperBound;
-    final double generationProbability;
-
-    public ContinuousEmpiricGeneratorConfiguration(double lowerBound, double upperBound, double generationProbability) {
-        this.lowerBound = lowerBound;
-        this.upperBound = upperBound;
-        this.generationProbability = generationProbability;
-    }
-
-    public double getLowerBound() {
-        return lowerBound;
-    }
-
-    public double getUpperBound() {
-        return upperBound;
-    }
-
-    public double getGenerationProbability() {
-        return generationProbability;
-    }
+/**
+ * Configuration for a generator that will be a part of an empiric generator
+ * @param lowerBound loweBound generation number (inclusive)
+ * @param upperBound upperBound generation number (exclusive)
+ * @param generationProbability the probability of picking this generator, a real number from 0 to 1
+ */
+public record ContinuousEmpiricGeneratorConfiguration(double lowerBound, double upperBound,
+                                                      double generationProbability) {
 }

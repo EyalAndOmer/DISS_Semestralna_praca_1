@@ -4,6 +4,10 @@ import javafx.util.StringConverter;
 
 import java.text.DecimalFormat;
 
+/**
+ * Custom number axis converter, that makes the displayed numbers on the axes more readable.
+ * The converter uses the symbol K for thousands and M for millions
+ */
 public class NumberAxisConverter extends StringConverter<Number> {
     final DecimalFormat formatter;
 

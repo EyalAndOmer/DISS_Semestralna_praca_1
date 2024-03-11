@@ -1,9 +1,9 @@
 package sk.majba.montecarlo.be;
 
-import io.fair_acc.dataset.spi.DoubleDataSet;
 import javafx.application.Platform;
 import sk.majba.montecarlo.be.generators.*;
 import sk.majba.montecarlo.be.simulation_core.Replication;
+import sk.majba.montecarlo.fe.Controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +11,9 @@ import java.util.Random;
 
 import static sk.majba.montecarlo.be.Constants.*;
 
+/**
+ * Class that encapsulates the logic behind the replications of the Monte Carlo simulation
+ */
 public class HypotekaReplication implements Replication {
     Random seedGenerator = new Random();
 
@@ -26,11 +29,10 @@ public class HypotekaReplication implements Replication {
     double strategy2Sum;
     double strategy3Sum;
     int numReplications;
+    Controller controller;
 
-    List<DoubleDataSet> allDatasets;
-
-    public HypotekaReplication(List<DoubleDataSet> allDatasets) {
-        this.allDatasets = allDatasets;
+    public HypotekaReplication(Controller controller) {
+        this.controller = controller;
     }
 
     @Override
@@ -39,13 +41,7 @@ public class HypotekaReplication implements Replication {
             seedGenerator.setSeed(STATIC_SEED);
         }
 
-        ArrayList<ContinuousEmpiricGeneratorConfiguration> empiricGenerators =  new ArrayList<>();
-        empiricGenerators.add(new ContinuousEmpiricGeneratorConfiguration(0.1, 0.3, 0.1));
-        empiricGenerators.add(new ContinuousEmpiricGeneratorConfiguration(0.3, 0.8, 0.35));
-        empiricGenerators.add(new ContinuousEmpiricGeneratorConfiguration(0.8, 1.2, 0.2));
-        empiricGenerators.add(new ContinuousEmpiricGeneratorConfiguration(1.2, 2.5, 0.15));
-        empiricGenerators.add(new ContinuousEmpiricGeneratorConfiguration(2.5, 3.8, 0.15));
-        empiricGenerators.add(new ContinuousEmpiricGeneratorConfiguration(3.8, 4.8, 0.05));
+        ArrayList<ContinuousEmpiricGeneratorConfiguration> empiricGenerators = getContinuousEmpiricGeneratorConfigurations();
 
         RangeMap<Generator> generators = new RangeMap<>();
         generators.put(2024, 2025, new DiscreteUniformGenerator(1, 4, seedGenerator));
@@ -59,15 +55,26 @@ public class HypotekaReplication implements Replication {
         this.strategyTwoFixationChangeYears = new ArrayList<>(List.of(3, 3, 3, 1));
         this.strategyThreeFixationChangeYears = new ArrayList<>(List.of(3, 1, 5, 1));
 
-        this.strategy1 = new HypotekaStrategy(strategyOneFixationChangeYears, generators, STARTOVACIA_VYSKA_HYPOTEKARNEHO_UVERU, POCET_ROKOV_SPLACANIA);
-        this.strategy2 = new HypotekaStrategy(strategyTwoFixationChangeYears, generators, STARTOVACIA_VYSKA_HYPOTEKARNEHO_UVERU, POCET_ROKOV_SPLACANIA);
-        this.strategy3 = new HypotekaStrategy(strategyThreeFixationChangeYears, generators, STARTOVACIA_VYSKA_HYPOTEKARNEHO_UVERU, POCET_ROKOV_SPLACANIA);
+        this.strategy1 = new HypotekaStrategy(strategyOneFixationChangeYears, generators, this.controller.getMortgageSum(), POCET_ROKOV_SPLACANIA);
+        this.strategy2 = new HypotekaStrategy(strategyTwoFixationChangeYears, generators, this.controller.getMortgageSum(), POCET_ROKOV_SPLACANIA);
+        this.strategy3 = new HypotekaStrategy(strategyThreeFixationChangeYears, generators, this.controller.getMortgageSum(), POCET_ROKOV_SPLACANIA);
 
         this.strategy1Sum = 0;
         this.strategy2Sum = 0;
         this.strategy3Sum = 0;
 
         this.numReplications = 0;
+    }
+
+    private static ArrayList<ContinuousEmpiricGeneratorConfiguration> getContinuousEmpiricGeneratorConfigurations() {
+        ArrayList<ContinuousEmpiricGeneratorConfiguration> empiricGenerators =  new ArrayList<>();
+        empiricGenerators.add(new ContinuousEmpiricGeneratorConfiguration(0.1, 0.3, 0.1));
+        empiricGenerators.add(new ContinuousEmpiricGeneratorConfiguration(0.3, 0.8, 0.35));
+        empiricGenerators.add(new ContinuousEmpiricGeneratorConfiguration(0.8, 1.2, 0.2));
+        empiricGenerators.add(new ContinuousEmpiricGeneratorConfiguration(1.2, 2.5, 0.15));
+        empiricGenerators.add(new ContinuousEmpiricGeneratorConfiguration(2.5, 3.8, 0.15));
+        empiricGenerators.add(new ContinuousEmpiricGeneratorConfiguration(3.8, 4.8, 0.05));
+        return empiricGenerators;
     }
 
     @Override
@@ -90,13 +97,13 @@ public class HypotekaReplication implements Replication {
 
         this.numReplications++;
 
-        if (this.numReplications % 100 == 0 && this.numReplications > 1_000_000) {
+        if (this.numReplications % this.controller.getSkipEachNValuesSize() == 0 && this.numReplications > this.controller.getSkipFirstValuesSize()) {
             final int finalI = this.numReplications;
             // Output data to chart
             Platform.runLater(() -> {
-                this.allDatasets.get(0).add(finalI, this.strategy1Sum / this.numReplications);
-                this.allDatasets.get(1).add(finalI, this.strategy2Sum / this.numReplications);
-                this.allDatasets.get(2).add(finalI, this.strategy3Sum / this.numReplications);
+                this.controller.getAllDatasets().get(0).add(finalI, this.strategy1Sum / this.numReplications);
+                this.controller.getAllDatasets().get(1).add(finalI, this.strategy2Sum / this.numReplications);
+                this.controller.getAllDatasets().get(2).add(finalI, this.strategy3Sum / this.numReplications);
             });
         }
     }

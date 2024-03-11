@@ -8,12 +8,20 @@ import java.util.Random;
 
 import static sk.majba.montecarlo.be.Constants.DELTA;
 
+/**
+ * Implementation of a continuous empiric generator
+ */
 public class ContinuousEmpiricGenerator extends Generator {
     private final List<Double> generationIntervals;
     private final List<Generator> empiricGenerators;
     private final Random propabilityRandom;
     private final Random seedGenerator;
 
+    /**
+     * Creates a continuous empiric generator
+     * @param configurations List of configurations for the generator
+     * @param seedGenerator generator used to initialize the seed for all the generators used by the empiric generator
+     */
     public ContinuousEmpiricGenerator(List<ContinuousEmpiricGeneratorConfiguration> configurations, Random seedGenerator) {
         this.generationIntervals = new ArrayList<>();
         this.propabilityRandom = new Random();
@@ -29,9 +37,9 @@ public class ContinuousEmpiricGenerator extends Generator {
     private void initGenerators(List<ContinuousEmpiricGeneratorConfiguration> configurations) {
         for (ContinuousEmpiricGeneratorConfiguration configuration : configurations) {
             this.empiricGenerators.add(new ContinuousUniformGenerator(
-                    configuration.getLowerBound(),
-                    configuration.getUpperBound(), this.seedGenerator,
-                    configuration.getGenerationProbability())
+                    configuration.lowerBound(),
+                    configuration.upperBound(), this.seedGenerator,
+                    configuration.generationProbability())
             );
         }
     }
